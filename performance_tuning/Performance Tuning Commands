@@ -1,0 +1,211 @@
+1. SET STATISTICS TIME ON
+Enables timing statistics to measure query execution time, useful for identifying performance bottlenecks.
+Example:
+SET STATISTICS TIME ON;
+SELECT * FROM large_table;
+SET STATISTICS TIME OFF;
+
+2. SET STATISTICS IO ON
+Provides detailed I/O statistics for a query, including the number of logical and physical reads.
+Example:
+SET STATISTICS IO ON;
+SELECT * FROM large_table;
+SET STATISTICS IO OFF;
+
+3. CREATE INDEX
+Adds an index on frequently queried columns, reducing retrieval time but increasing storage usage.
+Example:
+CREATE INDEX idx_column_name ON table_name (column_name);
+
+4. DROP INDEX
+Removes an index, which can free up storage and reduce maintenance overhead if the index is underutilized.
+Example:
+DROP INDEX idx_column_name ON table_name;
+
+5. DBCC FREEPROCCACHE
+Clears the procedure cache, forcing stored procedures and queries to recompile. Useful for performance testing but should be used sparingly.
+Example:
+DBCC FREEPROCCACHE;
+
+6. DBCC DROPCLEANBUFFERS
+Clears the buffer cache, forcing SQL Server to read data from disk on subsequent queries. Often used to test query performance with a cold cache.
+Example:
+DBCC DROPCLEANBUFFERS;
+
+7. OPTIMIZE TABLE
+Reorganizes table data and defragments indexes, improving performance for heavily updated tables.
+Example:
+OPTIMIZE TABLE table_name;
+
+8. ALTER INDEX ... REBUILD
+Rebuilds an index to improve performance for read-heavy workloads by defragmenting and reorganizing the index.
+Example:
+ALTER INDEX idx_column_name ON table_name REBUILD;
+
+9. ALTER INDEX ... REORGANIZE
+Reorganizes an index at the page level, using less system resources than a full rebuild but offering moderate performance gains.
+Example:
+ALTER INDEX idx_column_name ON table_name REORGANIZE;
+
+10. SET MAXDOP
+Limits the maximum number of CPUs used in parallel query execution, helping control resource usage for large queries.
+Example:
+OPTION (MAXDOP 4);
+
+11. SET QUERY_GOVERNOR_COST_LIMIT
+Limits the estimated cost of queries, preventing long-running queries from consuming excessive resources.
+Example:
+SET QUERY_GOVERNOR_COST_LIMIT 300;
+
+12. SET LOCK_TIMEOUT
+Sets a limit on the wait time for acquiring locks, which can improve performance by reducing blocking in high-concurrency environments.
+Example:
+SET LOCK_TIMEOUT 5000; -- 5 seconds
+
+13.UPDATE STATISTICS
+Updates index and column statistics to ensure the query optimizer has the latest information, which can improve query plans.
+Example:
+UPDATE STATISTICS table_name WITH FULLSCAN;
+
+14. DBCC UPDATEUSAGE
+Corrects inaccuracies in space usage data, helping the query optimizer make better decisions.
+Example:
+DBCC UPDATEUSAGE(database_name);
+
+15. FORCESEEK (Query Hint)
+Forces the query optimizer to use an index seek instead of a scan, improving performance on large datasets.
+Example:
+SELECT * FROM table_name WITH (FORCESEEK) WHERE column_name = 'value';
+
+16. SET WORK_MEM
+Adjusts the memory allocated for sorting and hashing operations, improving performance on memory-intensive queries.
+Example:
+SET work_mem = '64MB';
+
+17. CREATE INDEX WITH FILLFACTOR
+Creates an index with a specific fill factor, leaving space in pages for future growth, reducing fragmentation over time.
+Example:
+CREATE INDEX idx_name ON table_name (column_name) WITH (FILLFACTOR = 70);
+
+18. SET STATISTICS PROFILE ON
+Shows the execution plan of a query, useful for understanding how SQL Server executes a query.
+Example:
+SET STATISTICS PROFILE ON;
+SELECT * FROM table_name;
+SET STATISTICS PROFILE OFF;
+
+19. OPTION (OPTIMIZE FOR UNKNOWN)
+Instructs the optimizer to ignore parameter values when generating the query plan, helpful in cases where parameter values vary widely.
+Example:
+SELECT * FROM table_name WHERE column_name = @parameter OPTION (OPTIMIZE FOR UNKNOWN);
+
+20. USE HINT ('FORCE_LEGACY_CARDINALITY_ESTIMATION')
+Uses the legacy cardinality estimation model, which can improve performance for some queries with complex joins or aggregations.
+Example:
+SELECT * FROM table_name OPTION (USE HINT('FORCE_LEGACY_CARDINALITY_ESTIMATION'));
+
+21. SET FORCEPLAN
+Instructs SQL Server to process queries in a sequential order rather than using parallelism. This can improve performance on systems with limited CPU resources.
+Example:
+SET FORCEPLAN ON;
+SELECT * FROM large_table;
+SET FORCEPLAN OFF;
+
+22. ALTER DATABASE SCOPED CONFIGURATION (MAXDOP)
+Limits the degree of parallelism for all queries in the database, providing more control over CPU usage.
+Example:
+ALTER DATABASE SCOPED CONFIGURATION SET MAXDOP = 4;
+
+23. FORCESCAN (Query Hint)
+Forces the query optimizer to use a table scan instead of an index scan, which can be useful for small tables or certain types of performance testing.
+Example:
+SELECT * FROM large_table WITH (FORCESCAN);
+
+24. CREATE STATISTICS
+Manually creates statistics on columns to help the optimizer make better query decisions.
+Example:
+CREATE STATISTICS stat_name ON table_name (column_name);
+
+25. SP_UPDATESTATS
+Updates statistics for all user-defined tables, improving query performance by keeping optimizer information accurate.
+Example:
+EXEC sp_updatestats;
+
+26. ALTER INDEX … SET (ONLINE = ON)
+Allows index operations to be performed online, which reduces downtime but may impact performance temporarily.
+Example:
+ALTER INDEX idx_name ON table_name REBUILD WITH (ONLINE = ON);
+
+27. SP_RECOMPILE
+Forces a recompile of stored procedures, views, or triggers, helping optimize query plans for specific objects.
+Example:
+EXEC sp_recompile 'procedure_name';
+
+28. FOR XML PATH (Query Hint)
+Converts query results to XML, useful for certain applications but can impact performance if not managed carefully.
+Example:
+SELECT name, age FROM employees FOR XML PATH('employee');
+
+29. SET DEADLOCK_PRIORITY
+Specifies the importance of the current session when a deadlock is encountered, allowing certain processes to continue while others are terminated.
+Example:
+SET DEADLOCK_PRIORITY LOW;
+
+30. DBCC FLUSHPROCINDB
+Removes compiled plans from the procedure cache for a specific database, which can be useful for tuning specific database queries.
+Example:
+DBCC FLUSHPROCINDB(database_id);
+
+31. USE HINT (‘DISABLE_OPTIMIZER_ROWGOAL’)
+Disables row goal optimization, which can be beneficial when working with queries that use TOP or other row-limiting techniques.
+Example:
+SELECT TOP 10 * FROM large_table OPTION (USE HINT('DISABLE_OPTIMIZER_ROWGOAL'));
+
+32. FORCE ORDER (Query Hint)
+Forces SQL Server to use the join order specified in the query, which can improve performance in specific cases but may reduce optimization.
+Example:
+SELECT * FROM table1 JOIN table2 ON table1.id = table2.id OPTION (FORCE ORDER);
+
+33. DBCC SQLPERF (LOGSPACE)
+Monitors log space usage, providing insight into database performance issues related to log file growth.
+Example:
+DBCC SQLPERF (LOGSPACE);
+
+34. SP_CONFIGURE ‘min server memory’ and ‘max server memory’
+Configures minimum and maximum memory for SQL Server, optimizing resource usage on servers with multiple applications.
+Example:
+EXEC sp_configure 'min server memory', 2048;
+EXEC sp_configure 'max server memory', 4096;
+RECONFIGURE;
+
+35. OPTION (KEEPFIXED PLAN)
+Prevents recompilation of the execution plan, which is beneficial in cases where consistent execution is needed, but may reduce flexibility.
+Example:
+SELECT * FROM table_name WHERE condition OPTION (KEEPFIXED PLAN);
+
+36. OPTION (RECOMPILE)
+Forces a recompile for a specific query, often used in stored procedures to handle variable data patterns and improve query accuracy.
+Example:
+SELECT * FROM table_name OPTION (RECOMPILE);
+
+37. CREATE INDEX WITH PAD_INDEX
+Sets the FILLFACTOR value for intermediate index pages, helping to avoid fragmentation in indexes used for frequently updated data.
+Example:
+CREATE INDEX idx_name ON table_name (column_name) WITH (FILLFACTOR = 70, PAD_INDEX = ON);
+
+38. SET STATISTICS XML ON
+Provides detailed XML output of query execution plans, useful for in-depth analysis of complex queries.
+Example:
+SET STATISTICS XML ON;
+SELECT * FROM large_table;
+SET STATISTICS XML OFF;
+
+39. ENABLE INDEX OPTIMIZATION
+Improves index usage by reordering columns in indexes, which can help with complex queries but requires testing to ensure compatibility.
+Example:
+ALTER INDEX idx_name ON table_name SET (OPTIMIZE_INDEX = ON);
+
+40. CHECKPOINT
+Forces a checkpoint in the database, ensuring that all modified pages are written to disk, which can help control log file growth.
+Example:
+CHECKPOINT;
