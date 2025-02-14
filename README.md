@@ -10,6 +10,7 @@ This repository is designed as a comprehensive reference for advanced SQL usage.
 - Security and Access Control: Fine-grained access controls and encryption techniques to secure sensitive data.
 - High Availability: Configurations for maintaining database availability and redundancy.
 - Analytics and Data Transformation: Functions for advanced data processing and analysis.
+- **still in the writing stages**
 
 # Folder Structure
 - performance_tuning - Commands for improving database and query performance.
@@ -17,6 +18,7 @@ This repository is designed as a comprehensive reference for advanced SQL usage.
 - security_encryption - Security-focused commands, including encryption and access controls.
 - high_availability - Tools for configuring high-availability setups.
 - data_transformation - Analytical and transformation functions for data processing.
+- **still in the writing stages**
 
 # Usage
 Each SQL command is intended for educational or authorized professional use. Commands are provided as examples and should be tested in a safe, non-production environment to avoid unintended impacts.
